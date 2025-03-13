@@ -55,13 +55,15 @@ ax.legend()
 ax.grid(True, linestyle="--", alpha=0.7)
 
 # Tampilkan plot di Streamlit
-# col2.pyplot(fig)
 col1.pyplot(fig)
-monthly_orders_df['order_date'] = pd.to_datetime(monthly_orders_df['order_date'])
-col2.write(monthly_orders_df.sort_values(by='order_date', ascending=False).reset_index(drop=True))
-# month = monthly_orders_df.loc[-1,'order_date'].month_name()
-# col2.metric(label=f"Total Orders ({month}):", value="2569", delta=f"{2897-2569}")
 
+monthly_orders_df = monthly_orders_df.sort_values(by='order_date', ascending=False).reset_index(drop=True)
+
+monthly_orders_df['order_date'] = pd.to_datetime(monthly_orders_df['order_date'])
+month = monthly_orders_df.loc[0,'order_date'].month_name()
+col2.metric(label=f"Total Orders ({month}):", value=monthly_orders_df.loc[0, 'order_count'], delta=f"{monthly_orders_df.loc[0, 'order_count']-monthly_orders_df.loc[1, 'order_count']}")
+
+col2.write(monthly_orders_df)
 
 col1,col2,col3 = st.columns([1,1,1])
 products_counts = pd.read_csv('dataframe/product_counts.csv')
