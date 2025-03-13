@@ -8,6 +8,7 @@ st.set_page_config(layout="wide")
 st.write(
     """
     ## **Dashboard Brazilian E-Commerce | Olist**
+    *2016(Q4) - 2018(Q2)*
     """
 )
 
@@ -20,22 +21,22 @@ fig, ax = plt.subplots(figsize=(12, 6))
 
 # Plot data untuk 2016
 ax.plot(
-    monthly_orders_df["order_date"][:5], 
-    monthly_orders_df["order_count"][:5], 
+    monthly_orders_df["order_date"][:4], 
+    monthly_orders_df["order_count"][:4], 
     marker='o', linewidth=2, color="#72BCD4", label="2016"
 )
 
 # Plot data untuk 2017
 ax.plot(
-    monthly_orders_df["order_date"][4:17], 
-    monthly_orders_df["order_count"][4:17], 
+    monthly_orders_df["order_date"][3:16], 
+    monthly_orders_df["order_count"][3:16], 
     marker='s', linewidth=2, color="#FF6F61", label="2017"
 )
 
 # Plot data untuk 2018
 ax.plot(
-    monthly_orders_df["order_date"][16:], 
-    monthly_orders_df["order_count"][16:], 
+    monthly_orders_df["order_date"][15:], 
+    monthly_orders_df["order_count"][15:], 
     marker='D', linewidth=2, color="#2E8B57", label="2018"
 )
 
@@ -61,11 +62,13 @@ monthly_orders_df = monthly_orders_df.sort_values(by='order_date', ascending=Fal
 
 monthly_orders_df['order_date'] = pd.to_datetime(monthly_orders_df['order_date'])
 month = monthly_orders_df.loc[0,'order_date'].month_name()
-col2.metric(label=f"Total Orders ({month}):", value=monthly_orders_df.loc[0, 'order_count'], delta=f"{monthly_orders_df.loc[0, 'order_count']-monthly_orders_df.loc[1, 'order_count']}")
 
+col2.metric(label=f"Total Pesanan ({month}):", value=monthly_orders_df.loc[0, 'order_count'], delta=f"{monthly_orders_df.loc[0, 'order_count']-monthly_orders_df.loc[1, 'order_count']}")
+
+monthly_orders_df['order_date'] = monthly_orders_df['order_date'].dt.strftime("%Y-%m")
 col2.write(monthly_orders_df)
 
-col1,col2,col3 = st.columns([1,1,1])
+
 products_counts = pd.read_csv('dataframe/product_counts.csv')
 top_products_df = pd.read_csv('dataframe/top_products.csv')
 
@@ -75,6 +78,8 @@ top_products_df = pd.read_csv('dataframe/top_products.csv')
 
 
 # PERTANYAAN 2
+col1,col2 = st.columns([1,1])
+
 # Warna untuk highlight kategori teratas
 colors = ["#72BCD4", "#D3D3D3", "#D3D3D3", "#D3D3D3", "#D3D3D3"]
 
@@ -96,7 +101,6 @@ sns.barplot(
 ax.set_title("5 Kategori Produk dengan Penjualan Tertinggi (2016-2018)", loc="center", fontsize=15)
 ax.set_ylabel(None)
 ax.set_xlabel("Total Penjualan")
-
 col1.pyplot(fig)
 
 # Warna untuk highlight kategori terendah
@@ -120,9 +124,7 @@ sns.barplot(
 ax.set_title("5 Kategori Produk dengan Penjualan Terendah (2016-2018)", loc="center", fontsize=15)
 ax.set_ylabel(None)
 ax.set_xlabel("Total Penjualan")
-
-# Tampilkan plot di Streamlit
-col1.pyplot(fig)
+col2.pyplot(fig)
 
 # PERTANYAAN 3
 # Warna untuk highlight kategori teratas
@@ -151,7 +153,7 @@ ax.set_ylabel(None)
 ax.set_xlabel("Total Review (%)")
 
 # Tampilkan plot di Streamlit
-col3.pyplot(fig)
+col1.pyplot(fig)
 
 # Warna untuk highlight kategori terbawah
 colors = ["#D3D3D3"] * 19 + ["#72BCD4"]
@@ -179,4 +181,4 @@ ax.set_ylabel(None)
 ax.set_xlabel("Total Review (%)")
 
 # Tampilkan plot di Streamlit
-col3.pyplot(fig)
+col2.pyplot(fig)
