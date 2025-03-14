@@ -12,7 +12,8 @@ st.write(
     """
 )
 
-monthly_orders_df = pd.read_csv('dataframe/monthly_orders.csv')
+# monthly_orders_df = pd.read_csv('dataframe/monthly_orders.csv')
+monthly_orders_df = pd.read_csv('monthly_orders.csv')
 col1,col2 = st.columns([3,1])
 
 # PERTANYAAN 1
@@ -69,8 +70,10 @@ monthly_orders_df['order_date'] = monthly_orders_df['order_date'].dt.strftime("%
 col2.write(monthly_orders_df)
 
 
-products_counts = pd.read_csv('dataframe/product_counts.csv')
-top_products_df = pd.read_csv('dataframe/top_products.csv')
+# products_counts = pd.read_csv('dataframe/product_counts.csv')
+products_counts = pd.read_csv('product_counts.csv')
+# top_products_df = pd.read_csv('dataframe/top_products.csv')
+top_products_df = pd.read_csv('top_products.csv')
 
 
 
