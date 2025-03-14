@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+import os
 
 st.set_page_config(layout="wide")
 
@@ -12,8 +13,17 @@ st.write(
     """
 )
 
-# monthly_orders_df = pd.read_csv('dataframe/monthly_orders.csv')
-monthly_orders_df = pd.read_csv('monthly_orders.csv')
+def load_data(filename):
+    file_path = os.path.join(os.path.dirname(__file__), "dataframe", filename)
+    return pd.read_csv(file_path)
+
+# Load Dataset
+monthly_orders_df = load_data("monthly_orders.csv")
+
+
+
+
+# monthly_orders_df = pd.read_csv('monthly_orders.csv')
 col1,col2 = st.columns([3,1])
 
 # PERTANYAAN 1
@@ -71,9 +81,9 @@ col2.write(monthly_orders_df)
 
 
 # products_counts = pd.read_csv('dataframe/product_counts.csv')
-products_counts = pd.read_csv('product_counts.csv')
+products_counts = load_data('product_counts.csv')
 # top_products_df = pd.read_csv('dataframe/top_products.csv')
-top_products_df = pd.read_csv('top_products.csv')
+top_products_df = load_data('top_products.csv')
 
 
 
