@@ -83,7 +83,6 @@ monthly_orders_df = monthly_orders_df.sort_values(by='order_date', ascending=Fal
 monthly_orders_df['order_date'] = pd.to_datetime(monthly_orders_df['order_date'])
 month = monthly_orders_df.loc[0,'order_date'].month_name()
 
-# col2.metric(label=f"Total Pesanan ({month}):", value=monthly_orders_df.loc[0, 'order_count'], delta=f"{monthly_orders_df.loc[0, 'order_count']-monthly_orders_df.loc[1, 'order_count']}")
 col2.metric(label=f"Total Pesanan ({month}):", value=monthly_orders_df.loc[0, 'order_count'], delta=f"{delta_value(monthly_orders_df, 'order_count')[0]} ({delta_value(monthly_orders_df, 'order_count')[1]:.2f}%)")
 
 monthly_orders_df['order_date'] = monthly_orders_df['order_date'].dt.strftime("%Y-%m")
