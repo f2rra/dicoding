@@ -4,18 +4,29 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import os
 
-st.set_page_config(layout="wide")
+st.set_page_config(page_title='Olist Brazilian E-Commerce Dashboard', layout="wide")
+
+@st.cache_data
+def load_data(filename):
+    file_path = os.path.join(os.path.dirname(__file__), "dataframe", filename)
+    return pd.read_csv(file_path)
+
+def delta_value(df, column):
+    if len(df) < 2:
+        return 0, 0
+    current_val = df[column].iloc[0]
+    prev_val = df[column].iloc[1]
+    delta = current_val - prev_val
+    delta_pct = (delta / prev_val) * 100 if prev_val != 0 else 0
+    return delta, delta_pct
 
 st.write(
     """
-    ## **Dashboard Brazilian E-Commerce | Olist**
+    ## Olist Brazilian E-Commerce Dashboard
     *2016(Q4) - 2018(Q2)*
     """
 )
 
-def load_data(filename):
-    file_path = os.path.join(os.path.dirname(__file__), "dataframe", filename)
-    return pd.read_csv(file_path)
 
 # Load Dataset
 monthly_orders_df = load_data("monthly_orders.csv")
@@ -72,10 +83,13 @@ monthly_orders_df = monthly_orders_df.sort_values(by='order_date', ascending=Fal
 monthly_orders_df['order_date'] = pd.to_datetime(monthly_orders_df['order_date'])
 month = monthly_orders_df.loc[0,'order_date'].month_name()
 
-col2.metric(label=f"Total Pesanan ({month}):", value=monthly_orders_df.loc[0, 'order_count'], delta=f"{monthly_orders_df.loc[0, 'order_count']-monthly_orders_df.loc[1, 'order_count']}")
+# col2.metric(label=f"Total Pesanan ({month}):", value=monthly_orders_df.loc[0, 'order_count'], delta=f"{monthly_orders_df.loc[0, 'order_count']-monthly_orders_df.loc[1, 'order_count']}")
+col2.metric(label=f"Total Pesanan ({month}):", value=monthly_orders_df.loc[0, 'order_count'], delta=f"{delta_value(monthly_orders_df, 'order_count')[0]} ({delta_value(monthly_orders_df, 'order_count')[1]:.2f}%)")
 
 monthly_orders_df['order_date'] = monthly_orders_df['order_date'].dt.strftime("%Y-%m")
-col2.write(monthly_orders_df)
+
+with col2.expander('Klik untuk melihat data penjualan per bulan'):
+    st.dataframe(monthly_orders_df)
 
 
 
