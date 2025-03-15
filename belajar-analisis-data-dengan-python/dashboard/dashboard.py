@@ -19,11 +19,9 @@ def load_data(filename):
 
 # Load Dataset
 monthly_orders_df = load_data("monthly_orders.csv")
+products_counts = load_data('product_counts.csv')
+top_products_df = load_data('top_products.csv')
 
-
-
-
-# monthly_orders_df = pd.read_csv('monthly_orders.csv')
 col1,col2 = st.columns([3,1])
 
 # PERTANYAAN 1
@@ -69,8 +67,8 @@ ax.grid(True, linestyle="--", alpha=0.7)
 # Tampilkan plot di Streamlit
 col1.pyplot(fig)
 
+# Tampilkan Perubahan Total Pesanan Pada Bulan ini (Data Terakhir: Agustus 2018) Serta Tabelnya
 monthly_orders_df = monthly_orders_df.sort_values(by='order_date', ascending=False).reset_index(drop=True)
-
 monthly_orders_df['order_date'] = pd.to_datetime(monthly_orders_df['order_date'])
 month = monthly_orders_df.loc[0,'order_date'].month_name()
 
@@ -78,15 +76,6 @@ col2.metric(label=f"Total Pesanan ({month}):", value=monthly_orders_df.loc[0, 'o
 
 monthly_orders_df['order_date'] = monthly_orders_df['order_date'].dt.strftime("%Y-%m")
 col2.write(monthly_orders_df)
-
-
-# products_counts = pd.read_csv('dataframe/product_counts.csv')
-products_counts = load_data('product_counts.csv')
-# top_products_df = pd.read_csv('dataframe/top_products.csv')
-top_products_df = load_data('top_products.csv')
-
-
-
 
 
 
@@ -185,7 +174,7 @@ sns.barplot(
     hue=df_filtered.product_category_name,
     palette=colors,
     legend=False,
-    ax=ax  # Pastikan menggunakan ax agar figure sesuai
+    ax=ax
 )
 
 # Judul dan label
